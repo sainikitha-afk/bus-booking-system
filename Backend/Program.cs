@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using Backend.Services;
+using Backend.Interfaces;
+using Backend.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,17 +14,32 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngular", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
+
+// GlobalExceptionMiddleware must be registered FIRST — before any other middleware —
+// so it can catch exceptions thrown anywhere in the pipeline.
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
-    SeedData(db);
+    try
+    {
+        db.Database.EnsureCreated();
+        SeedData(db);
+    }
+    catch (Exception ex)
+    {
+        // Startup failure is logged and the process exits cleanly
+        Console.WriteLine($"[Startup] Database initialisation failed: {ex.Message}");
+        throw;
+    }
 }
+
 app.UseCors("AllowAngular");
 app.UseSwagger();
 app.UseSwaggerUI();

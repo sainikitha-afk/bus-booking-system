@@ -14,5 +14,6 @@ namespace Backend.Data
         public DbSet<OperatorRoute> OperatorRoutes { get; set; } = null!;
         public DbSet<PlatformFee> PlatformFees { get; set; } = null!;
         public DbSet<BookingGroup> BookingGroups { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; } = null!;
     }
 }

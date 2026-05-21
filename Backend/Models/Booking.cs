@@ -1,3 +1,4 @@
+// maps C# → PostgreSQL table
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
@@ -40,7 +41,7 @@ namespace Backend.Models
 
         [Column("booking_group_id")]
         public int? BookingGroupId { get; set; }
-        
+
         [ForeignKey("BookingGroupId")]
         public BookingGroup? BookingGroup { get; set; }
     }
