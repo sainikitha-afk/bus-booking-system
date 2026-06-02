@@ -1,0 +1,44 @@
+<div class="auth-bg d-flex justify-content-center align-items-center vh-100">
+  <div class="auth-card">
+    <div class="auth-logo">🚌 BusGo</div>
+    <h4 class="text-center mb-4">Create Account</h4>
+
+    <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input [(ngModel)]="name" class="form-control" placeholder="Your full name" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input [(ngModel)]="email" type="email" class="form-control" placeholder="you@example.com" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input [(ngModel)]="password" type="password" class="form-control" placeholder="Min 6 characters" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Confirm Password</label>
+      <input [(ngModel)]="confirmPassword" type="password" class="form-control" placeholder="Repeat password" />
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label">Register as</label>
+      <select [(ngModel)]="role" class="form-select">
+        <option value="Customer">Customer</option>
+        <option value="Operator">Bus Operator</option>
+      </select>
+    </div>
+
+    <button class="btn btn-danger w-100 mb-3" (click)="register()" [disabled]="loading">
+      {{ loading ? 'Creating account...' : 'Register' }}
+    </button>
+
+    <p class="text-center text-muted mb-0">
+      Already have an account? <a routerLink="/login" class="text-danger">Login</a>
+    </p>
+  </div>
+</div>

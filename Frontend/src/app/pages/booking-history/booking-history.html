@@ -1,0 +1,71 @@
+<div class="page-bg">
+  <div class="container py-4">
+    <h4 class="mb-4">My Bookings</h4>
+
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-danger"></div>
+    </div>
+
+    <div *ngIf="!loading && bookings.length === 0" class="empty-state">
+      <div class="empty-icon">🎫</div>
+      <h5>No bookings yet</h5>
+      <p class="text-muted">Your booking history will appear here.</p>
+      <a routerLink="/buses" class="btn btn-danger">Browse Buses</a>
+    </div>
+
+    <div *ngFor="let b of bookings" class="booking-card mb-3">
+      <div class="booking-top">
+        <div>
+          <h6 class="mb-0" *ngIf="b.bus">{{ b.bus.name }}</h6>
+          <small class="text-muted" *ngIf="b.bus">{{ b.bus.source }} → {{ b.bus.destination }}</small>
+        </div>
+        <span [class]="statusClass(b.status)">{{ b.status }}</span>
+      </div>
+
+      <div class="booking-details">
+        <div class="detail-item">
+          <span class="label">Seat</span>
+          <span>#{{ b.seatNumber }}</span>
+        </div>
+        <div class="detail-item" *ngIf="b.bus">
+          <span class="label">Travel Date</span>
+          <span>{{ b.bus.travelDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail-item" *ngIf="b.bus">
+          <span class="label">Departure</span>
+          <span>{{ b.bus.departureTime }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Passenger</span>
+          <span>{{ b.passengerName || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Payment</span>
+          <span>{{ b.paymentStatus }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Booked On</span>
+          <span>{{ b.bookingTime | date:'short' }}</span>
+        </div>
+      </div>
+
+      <div class="booking-actions d-flex gap-2 flex-wrap"
+           *ngIf="b.status === 'Paid' || b.status === 'Booked'">
+        <button *ngIf="b.status === 'Paid' && b.bookingGroupId"
+                (click)="viewTicket(b.bookingGroupId)"
+                class="btn btn-sm btn-danger">
+          View Ticket
+        </button>
+        <button *ngIf="b.status === 'Paid' && b.bookingGroupId"
+                (click)="giveFeedback(b.busId, b.bookingGroupId)"
+                class="btn btn-sm btn-outline-warning">
+          ⭐ Rate Journey
+        </button>
+        <button (click)="cancel(b.id)" class="btn btn-sm btn-outline-danger">
+          Cancel Booking
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

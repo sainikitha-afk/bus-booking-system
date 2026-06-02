@@ -1,0 +1,210 @@
+<div class="page-bg">
+  <div class="container-fluid py-4 px-4">
+
+    <div class="admin-header mb-4">
+      <h4>🛠 Admin Panel</h4>
+    </div>
+
+    <div *ngIf="message" class="alert alert-info py-2">{{ message }}</div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs mb-4">
+      <button [class.active]="activeTab==='dashboard'"  (click)="activeTab='dashboard'">Dashboard</button>
+      <button [class.active]="activeTab==='operators'"  (click)="activeTab='operators'">Operators</button>
+      <button [class.active]="activeTab==='locations'"  (click)="activeTab='locations'">Cities</button>
+      <button [class.active]="activeTab==='routes'"     (click)="activeTab='routes'">Routes</button>
+      <button [class.active]="activeTab==='fee'"        (click)="activeTab='fee'">Platform Fee</button>
+      <button [class.active]="activeTab==='ratings'"
+              (click)="activeTab='ratings'; loadTopRated()">⭐ Bus Ratings</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div *ngIf="activeTab==='dashboard' && stats" class="stats-grid">
+      <div class="stat-card"><div class="stat-num">{{ stats.totalUsers }}</div><div class="stat-label">Customers</div></div>
+      <div class="stat-card"><div class="stat-num">{{ stats.totalOperators }}</div><div class="stat-label">Operators</div></div>
+      <div class="stat-card pending"><div class="stat-num">{{ stats.pendingOperators }}</div><div class="stat-label">Pending Approvals</div></div>
+      <div class="stat-card"><div class="stat-num">{{ stats.totalBuses }}</div><div class="stat-label">Active Buses</div></div>
+      <div class="stat-card"><div class="stat-num">{{ stats.totalBookings }}</div><div class="stat-label">Confirmed Bookings</div></div>
+      <div class="stat-card revenue"><div class="stat-num">₹{{ stats.totalRevenue }}</div><div class="stat-label">Total Revenue</div></div>
+      <div class="stat-card"><div class="stat-num">{{ stats.totalLocations }}</div><div class="stat-label">Cities</div></div>
+      <div class="stat-card"><div class="stat-num">{{ stats.totalRoutes }}</div><div class="stat-label">Routes</div></div>
+    </div>
+
+    <!-- OPERATORS -->
+    <div *ngIf="activeTab==='operators'">
+
+      <div *ngIf="pendingOperators.length > 0" class="mb-4">
+        <h6 class="text-danger mb-3">⏳ Pending Approval ({{ pendingOperators.length }})</h6>
+        <div *ngFor="let op of pendingOperators" class="operator-card pending-card mb-2">
+          <div>
+            <strong>{{ op.user?.name }}</strong> — {{ op.businessName }}
+            <div class="text-muted small">{{ op.user?.email }} | {{ op.phone }}</div>
+            <div class="text-muted small">Applied: {{ op.appliedAt | date:'short' }}</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-success" (click)="approve(op.userId)">✓ Approve</button>
+            <button class="btn btn-sm btn-danger"  (click)="reject(op.userId)">✗ Reject</button>
+          </div>
+        </div>
+      </div>
+
+      <h6 class="mb-3">All Operators</h6>
+      <div *ngFor="let op of allOperators" class="operator-card mb-2">
+        <div>
+          <strong>{{ op.name }}</strong>
+          <span class="badge ms-2" [class.bg-success]="op.profile?.isApproved" [class.bg-warning]="!op.profile?.isApproved">
+            {{ op.profile?.isApproved ? 'Approved' : 'Pending' }}
+          </span>
+          <div class="text-muted small">{{ op.email }} | {{ op.profile?.businessName }}</div>
+        </div>
+        <div *ngIf="!op.profile?.isApproved" class="d-flex gap-2">
+          <button class="btn btn-sm btn-success" (click)="approve(op.id)">✓ Approve</button>
+          <button class="btn btn-sm btn-danger"  (click)="reject(op.id)">✗ Reject</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CITIES / LOCATIONS -->
+    <div *ngIf="activeTab==='locations'">
+      <div class="add-form mb-4">
+        <h6 class="mb-3">Add City</h6>
+        <div class="d-flex gap-2">
+          <input [(ngModel)]="newCity" class="form-control" placeholder="City name (e.g. Chennai)" style="max-width:300px" />
+          <button class="btn btn-danger" (click)="addCity()">Add City</button>
+        </div>
+      </div>
+
+      <div class="locations-grid">
+        <div *ngFor="let loc of locations" class="location-chip">
+          {{ loc.cityName }}
+          <button class="chip-delete" (click)="deleteCity(loc.id)">×</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUTES -->
+    <div *ngIf="activeTab==='routes'">
+      <div class="add-form mb-4">
+        <h6 class="mb-3">Create Route</h6>
+        <div class="d-flex gap-2 flex-wrap align-items-end">
+          <div>
+            <label class="form-label small">From</label>
+            <select [(ngModel)]="newRoute.sourceId" class="form-select" style="min-width:180px">
+              <option value="0">Select city</option>
+              <option *ngFor="let l of locations" [value]="l.id">{{ l.cityName }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label small">To</label>
+            <select [(ngModel)]="newRoute.destinationId" class="form-select" style="min-width:180px">
+              <option value="0">Select city</option>
+              <option *ngFor="let l of locations" [value]="l.id">{{ l.cityName }}</option>
+            </select>
+          </div>
+          <button class="btn btn-danger" (click)="addRoute()">Create Route</button>
+        </div>
+      </div>
+
+      <div class="routes-list">
+        <div *ngFor="let r of routes" class="route-row">
+          <span class="route-text">{{ r.sourceName }} → {{ r.destinationName }}</span>
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteRoute(r.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLATFORM FEE -->
+    <div *ngIf="activeTab==='fee'">
+      <div class="add-form" style="max-width:400px">
+        <h6 class="mb-3">Platform / Convenience Fee</h6>
+        <div class="mb-3">
+          <label class="form-label">Fee Type</label>
+          <select [(ngModel)]="fee.feeType" class="form-select">
+            <option value="Fixed">Fixed Amount (₹)</option>
+            <option value="Percentage">Percentage (%)</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Amount</label>
+          <div class="input-group">
+            <span class="input-group-text">{{ fee.feeType === 'Fixed' ? '₹' : '%' }}</span>
+            <input [(ngModel)]="fee.amount" type="number" class="form-control" />
+          </div>
+          <div class="form-text">
+            <span *ngIf="fee.feeType==='Fixed'">₹{{ fee.amount }} added to every booking</span>
+            <span *ngIf="fee.feeType==='Percentage'">{{ fee.amount }}% of ticket price added per booking</span>
+          </div>
+        </div>
+        <button class="btn btn-danger" (click)="saveFee()">Save Fee</button>
+      </div>
+    </div>
+
+    <!-- BUS RATINGS (GROUP BY + HAVING) -->
+    <div *ngIf="activeTab==='ratings'">
+      <h6 class="mb-3">Top Rated Buses</h6>
+
+      <!-- Threshold controls — changing these re-runs the HAVING clause -->
+      <div class="threshold-controls">
+        <div>
+          <label class="form-label small mb-1 fw-semibold">
+            Min Avg Rating (HAVING AVG ≥)
+          </label>
+          <input [(ngModel)]="minRating" type="number" min="1" max="5" step="0.5"
+                 class="form-control form-control-sm" style="width:90px" />
+        </div>
+        <div>
+          <label class="form-label small mb-1 fw-semibold">
+            Min Review Count (HAVING COUNT ≥)
+          </label>
+          <input [(ngModel)]="minCount" type="number" min="1"
+                 class="form-control form-control-sm" style="width:90px" />
+        </div>
+        <div class="align-self-end">
+          <button class="btn btn-danger btn-sm" (click)="loadTopRated()">
+            Apply Filter
+          </button>
+        </div>
+        <div class="align-self-end">
+          <code class="text-muted small">
+            GROUP BY bus_id HAVING AVG(rating) ≥ {{ minRating }} AND COUNT(*) ≥ {{ minCount }}
+          </code>
+        </div>
+      </div>
+
+      <div *ngIf="ratingsLoading" class="text-center py-4">
+        <div class="spinner-border spinner-border-sm text-danger"></div>
+      </div>
+
+      <div *ngIf="!ratingsLoading && topRatedBuses.length === 0"
+           class="text-muted text-center py-4">
+        No buses meet this threshold yet. Submit some feedback first!
+      </div>
+
+      <table *ngIf="!ratingsLoading && topRatedBuses.length > 0"
+             class="ratings-table">
+        <thead>
+          <tr>
+            <th>Bus</th>
+            <th>Route</th>
+            <th>Avg Rating</th>
+            <th>Reviews</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let b of topRatedBuses">
+            <td><strong>{{ b.busName }}</strong></td>
+            <td class="text-muted">{{ b.source }} → {{ b.destination }}</td>
+            <td>
+              <span class="stars-cell">{{ starsDisplay(b.avgRating) }}</span>
+              &nbsp;<strong>{{ b.avgRating }}</strong>
+            </td>
+            <td>
+              <span class="having-badge">{{ b.totalReviews }} review(s)</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,197 @@
+<div class="page-bg">
+  <div class="container py-4">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-danger"></div>
+      <p class="mt-2">Loading seats...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="error && !loading" class="alert alert-danger text-center">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading">
+
+      <!-- BUS INFO -->
+      <div class="bus-info-card mb-4" *ngIf="bus">
+        <div class="bus-info-left">
+          <div class="bus-name">{{ bus.name }}</div>
+          <div class="bus-meta">
+            <span class="badge-type">{{ bus.busType }}</span>
+            <span class="route-text">{{ bus.source }} → {{ bus.destination }}</span>
+          </div>
+          <div class="bus-times mt-1">
+            <span>🕐 {{ bus.departureTime }} — {{ bus.arrivalTime }}</span>
+          </div>
+        </div>
+
+        <div class="bus-price">
+          <span class="price-label">Fare per seat</span>
+          <span class="price-amount">₹{{ bus.price }}</span>
+        </div>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- SEAT LAYOUT -->
+        <div class="col-lg-6">
+
+          <!-- LEGEND -->
+          <div class="seat-legend mb-3">
+            <div class="legend-item"><div class="legend-box leg-available"></div><span>Available</span></div>
+            <div class="legend-item"><div class="legend-box leg-selected"></div><span>Selected</span></div>
+            <div class="legend-item"><div class="legend-box leg-female"></div><span>Ladies</span></div>
+            <div class="legend-item"><div class="legend-box leg-male"></div><span>Gents</span></div>
+            <div class="legend-item"><div class="legend-box leg-booked"></div><span>Booked</span></div>
+            <div class="legend-item"><div class="legend-box leg-locked"></div><span>Hold</span></div>
+          </div>
+
+          <!-- BUS SHELL -->
+          <div class="bus-shell">
+
+            <div class="driver-row">
+              <div class="driver-box">
+                <div class="driver-icon">🚌</div>
+              </div>
+            </div>
+
+            <!-- SEATS -->
+            <div class="seats-container">
+              <ng-container *ngFor="let row of seatRows">
+                <div class="seat-row">
+
+                  <!-- LEFT -->
+                  <div class="seat-pair">
+                    <ng-container *ngFor="let seat of row.slice(0, leftCount)">
+                      <div class="seat-box"
+                           [class.available]="seat.status === 'available'"
+                           [class.selected]="selectedSeats.includes(seat.seatNumber)"
+                           [class.locked]="seat.status === 'locked'"
+                           [class.booked]="seat.status === 'booked' && !seat.gender"
+                           [class.female]="seat.status === 'booked' && seat.gender === 'Female'"
+                           [class.male]="seat.status === 'booked' && seat.gender === 'Male'"
+                           [title]="'Seat ' + seat.seatNumber"
+                           (click)="selectSeat(seat)">
+                        <div class="seat-back"></div>
+                        <div class="seat-num">{{ seat.seatNumber }}</div>
+                      </div>
+                    </ng-container>
+                  </div>
+
+                  <!-- AISLE -->
+                  <div class="aisle">
+                    <span class="aisle-line"></span>
+                  </div>
+
+                  <!-- RIGHT -->
+                  <div class="seat-pair">
+                    <ng-container *ngFor="let seat of row.slice(leftCount)">
+                      <div class="seat-box"
+                           [class.available]="seat.status === 'available'"
+                           [class.selected]="selectedSeats.includes(seat.seatNumber)"
+                           [class.locked]="seat.status === 'locked'"
+                           [class.booked]="seat.status === 'booked' && !seat.gender"
+                           [class.female]="seat.status === 'booked' && seat.gender === 'Female'"
+                           [class.male]="seat.status === 'booked' && seat.gender === 'Male'"
+                           [title]="'Seat ' + seat.seatNumber"
+                           (click)="selectSeat(seat)">
+                        <div class="seat-back"></div>
+                        <div class="seat-num">{{ seat.seatNumber }}</div>
+                      </div>
+                    </ng-container>
+                  </div>
+
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+
+          <div class="mt-3">
+            <span class="text-muted small">
+              {{ availableCount }} seat(s) available
+            </span>
+          </div>
+
+        </div>
+
+        <!-- PASSENGER SECTION -->
+        <div class="col-lg-6">
+
+          <!-- HINT -->
+          <div *ngIf="!showPassengerForm" class="select-hint">
+            <div class="hint-icon">👆</div>
+            <p class="hint-text">Click on seats to select</p>
+          </div>
+
+          <!-- MULTI PASSENGER FORM -->
+          <div *ngIf="showPassengerForm" class="passenger-card">
+
+            <div class="passenger-header">
+              <h6>Passenger Details</h6>
+            </div>
+
+            <div *ngFor="let p of passengers; let i = index" class="mb-3 border p-3 rounded">
+
+              <h6>
+                Passenger {{ i + 1 }}
+                <span class="seat-badge">Seat {{ p.seatNumber }}</span>
+              </h6>
+
+              <input [(ngModel)]="p.name"
+                     class="form-control mb-2"
+                     placeholder="Full Name">
+
+              <div class="row">
+                <div class="col-6">
+                  <input [(ngModel)]="p.age"
+                         type="number"
+                         class="form-control"
+                         placeholder="Age">
+                </div>
+                <div class="col-6">
+                  <select [(ngModel)]="p.gender"
+                          class="form-select">
+                    <option value="">Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- FARE -->
+            <div class="fare-box mb-3">
+              <div class="fare-row">
+                <span>Total Seats</span>
+                <span>{{ selectedSeats.length }}</span>
+              </div>
+
+              <div class="fare-divider"></div>
+
+              <div class="fare-row">
+                <strong>Total ₹{{ bus?.price * selectedSeats.length }}</strong>
+              </div>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">
+              {{ error }}
+            </div>
+
+            <button class="btn btn-danger w-100"
+                    (click)="lockSeat()"
+                    [disabled]="locking">
+              {{ locking ? 'Processing...' : 'Proceed to Pay' }}
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="page-bg">
+  <div class="container py-5">
+
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-danger"></div>
+      <p class="mt-2">Loading your ticket...</p>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+
+    <div *ngIf="ticket && !loading" class="row justify-content-center">
+      <div class="col-md-8">
+
+        <!-- Success Banner -->
+        <div class="success-banner mb-4">
+          <div class="check-icon">✓</div>
+          <div>
+            <h5 class="mb-0">Booking Confirmed!</h5>
+            <small>Your ticket has been booked successfully.</small>
+          </div>
+        </div>
+
+        <!-- Ticket Card -->
+        <div class="ticket-card">
+
+          <div class="ticket-header">
+            <span class="ticket-id">Booking #{{ ticket.groupId }}</span>
+            <span class="badge bg-success">{{ ticket.paymentStatus }}</span>
+          </div>
+
+          <!-- Route -->
+          <div class="ticket-route">
+            <div class="route-point">
+              <div class="city">{{ ticket.source }}</div>
+              <div class="time">{{ ticket.departureTime }}</div>
+            </div>
+            <div class="route-arrow">→</div>
+            <div class="route-point">
+              <div class="city">{{ ticket.destination }}</div>
+              <div class="time">{{ ticket.arrivalTime }}</div>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Bus Details -->
+          <div class="ticket-details mb-3">
+            <div class="detail-row">
+              <span>Bus</span><strong>{{ ticket.busName }}</strong>
+            </div>
+            <div class="detail-row">
+              <span>Type</span><strong>{{ ticket.busType }}</strong>
+            </div>
+            <div class="detail-row">
+              <span>Travel Date</span>
+              <strong>{{ ticket.travelDate | date:'mediumDate' }}</strong>
+            </div>
+            <div class="detail-row" *ngIf="ticket.boardingPoint">
+              <span>Boarding</span><strong>{{ ticket.boardingPoint }}</strong>
+            </div>
+            <div class="detail-row" *ngIf="ticket.dropPoint">
+              <span>Drop</span><strong>{{ ticket.dropPoint }}</strong>
+            </div>
+            <div class="detail-row">
+              <span>Booked by</span><strong>{{ ticket.bookedBy }}</strong>
+            </div>
+          </div>
+
+          <!-- Passengers Table -->
+          <div class="passengers-section">
+            <h6 class="passengers-title">Passengers</h6>
+            <table class="passengers-table">
+              <thead>
+                <tr>
+                  <th>Seat</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of ticket.passengers">
+                  <td><span class="seat-chip">#{{ p.seatNumber }}</span></td>
+                  <td>{{ p.passengerName }}</td>
+                  <td>{{ p.age }}</td>
+                  <td>{{ p.gender }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr />
+
+          <div class="ticket-total">
+            <span>Total Paid</span>
+            <strong class="text-danger">₹{{ ticket.totalAmount }}</strong>
+          </div>
+
+        </div>
+
+        <div class="d-flex gap-3 mt-4">
+          <button class="btn btn-outline-danger flex-fill" (click)="printTicket()">
+            🖨 Print
+          </button>
+          <a routerLink="/history" class="btn btn-danger flex-fill">My Bookings</a>
+          <a routerLink="/buses"   class="btn btn-outline-secondary flex-fill">Book Again</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

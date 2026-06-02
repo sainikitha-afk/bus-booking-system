@@ -1,0 +1,68 @@
+<div class="home-container">
+
+  <!-- NAVBAR -->
+  <nav class="home-nav">
+    <div class="brand">🚌 BusGo</div>
+    <div class="nav-links">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register" class="btn-register">Register</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Book Bus Tickets Online</h1>
+    <p>Largest network of buses across India. Safe, simple &amp; affordable.</p>
+
+    <!-- SEARCH FORM -->
+    <div class="search-card">
+      <div class="search-row">
+        <div class="search-field">
+          <label>From</label>
+          <input [(ngModel)]="source" list="cities-from" placeholder="e.g. Chennai" class="form-control" autocomplete="off" />
+          <datalist id="cities-from">
+            <option *ngFor="let c of cities" [value]="c"></option>
+          </datalist>
+        </div>
+        <div class="swap-btn" (click)="swapLocations()">⇄</div>
+        <div class="search-field">
+          <label>To</label>
+          <input [(ngModel)]="destination" list="cities-to" placeholder="e.g. Bangalore" class="form-control" autocomplete="off" />
+          <datalist id="cities-to">
+            <option *ngFor="let c of cities" [value]="c"></option>
+          </datalist>
+        </div>
+        <div class="search-field">
+          <label>Date</label>
+          <input [(ngModel)]="date" type="date" class="form-control" [min]="today" />
+        </div>
+        <button class="btn-search" (click)="search()">Search Buses</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon">🛡️</div>
+      <h3>Safe Travel</h3>
+      <p>Verified operators and real-time tracking</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💰</div>
+      <h3>Best Prices</h3>
+      <p>Guaranteed lowest fares with no hidden charges</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎫</div>
+      <h3>Easy Booking</h3>
+      <p>Book in under 2 minutes from anywhere</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔄</div>
+      <h3>Easy Cancellation</h3>
+      <p>Hassle-free cancellations with instant refunds</p>
+    </div>
+  </div>
+
+</div>

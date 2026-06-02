@@ -1,0 +1,73 @@
+<div class="page-bg">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+
+        <!-- Order Summary -->
+        <div class="summary-card mb-4" *ngIf="bus">
+          <h5 class="mb-3 text-danger">Booking Summary</h5>
+          <div class="summary-row">
+            <span>Bus</span><strong>{{ bus.name }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Route</span><strong>{{ bus.source }} → {{ bus.destination }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Departure</span><strong>{{ bus.departureTime }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Seats ({{ seatNumbers.length }})</span>
+            <strong>#{{ seatNumbers.join(', #') }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Price per seat</span><strong>₹{{ bus.price }}</strong>
+          </div>
+          <hr />
+          <div class="summary-row total">
+            <span>Total Amount</span>
+            <strong class="text-danger">₹{{ totalAmount }}</strong>
+          </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="auth-card">
+          <h5 class="mb-4">💳 Payment Details</h5>
+
+          <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+
+          <div class="mb-3">
+            <label class="form-label">Card Number</label>
+            <input [(ngModel)]="cardNumber" class="form-control"
+                   placeholder="1234 5678 9012 3456" maxlength="19" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Card Holder Name</label>
+            <input [(ngModel)]="cardHolder" class="form-control" placeholder="Name on card" />
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <label class="form-label">Expiry Date</label>
+              <input [(ngModel)]="expiry" class="form-control" placeholder="MM/YY" maxlength="5" />
+            </div>
+            <div class="col">
+              <label class="form-label">CVV</label>
+              <input [(ngModel)]="cvv" type="password" class="form-control"
+                     placeholder="•••" maxlength="3" />
+            </div>
+          </div>
+
+          <div class="test-note mb-3">
+            <small>🔒 This is a dummy payment. Use any card details to proceed.</small>
+          </div>
+
+          <button class="btn btn-danger w-100" (click)="pay()" [disabled]="loading">
+            {{ loading ? 'Processing...' : 'Pay ₹' + totalAmount }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

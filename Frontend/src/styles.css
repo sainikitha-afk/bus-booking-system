@@ -1,0 +1,348 @@
+/* ===== GLOBAL RESET & BASE ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== NAVBAR ===== */
+.app-navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #d84315; color: white; padding: 0 24px; height: 56px;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.navbar-brand { font-size: 1.3rem; font-weight: 700; color: white; }
+.navbar-links { display: flex; align-items: center; gap: 20px; }
+.navbar-links a { color: rgba(255,255,255,0.9); font-size: 0.95rem; transition: color 0.2s; }
+.navbar-links a:hover { color: white; }
+.navbar-user { color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+.btn-logout {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
+  color: white; padding: 4px 14px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.25); }
+.btn-nav-register {
+  background: white; color: #d84315; padding: 5px 14px;
+  border-radius: 4px; font-weight: 600; font-size: 0.9rem;
+}
+
+/* ===== HOME PAGE ===== */
+.home-container { background: #1a1a2e; min-height: 100vh; color: white; }
+.home-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 40px; background: rgba(0,0,0,0.3);
+}
+.brand { font-size: 1.4rem; font-weight: 700; color: white; }
+.nav-links { display: flex; gap: 16px; align-items: center; }
+.nav-links a { color: rgba(255,255,255,0.85); font-size: 0.95rem; }
+.btn-register {
+  background: #d84315; color: white; padding: 6px 18px;
+  border-radius: 6px; font-size: 0.9rem;
+}
+.hero { text-align: center; padding: 60px 20px 40px; }
+.hero h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 12px; }
+.hero p { font-size: 1.1rem; color: rgba(255,255,255,0.75); margin-bottom: 40px; }
+.search-card {
+  background: white; color: #333; border-radius: 12px;
+  padding: 24px 28px; max-width: 900px; margin: 0 auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.search-row { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.search-field { flex: 1; min-width: 160px; }
+.search-field label { display: block; font-size: 0.8rem; color: #666; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
+.swap-btn { font-size: 1.4rem; cursor: pointer; padding: 8px; color: #d84315; margin-bottom: 4px; }
+.btn-search {
+  background: #d84315; color: white; border: none; padding: 10px 28px;
+  border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer;
+  white-space: nowrap; height: 42px;
+}
+.btn-search:hover { background: #bf360c; }
+.features { display: flex; justify-content: center; gap: 24px; padding: 50px 40px; flex-wrap: wrap; }
+.feature-card {
+  background: rgba(255,255,255,0.07); border-radius: 12px; padding: 28px 24px;
+  width: 200px; text-align: center; transition: transform 0.2s;
+}
+.feature-card:hover { transform: translateY(-4px); }
+.feature-card .icon { font-size: 2rem; margin-bottom: 12px; }
+.feature-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.feature-card p { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+
+/* ===== AUTH PAGES ===== */
+.auth-bg { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+.auth-card {
+  background: white; border-radius: 14px; padding: 36px 32px;
+  width: 420px; box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.auth-logo { text-align: center; font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+.demo-hint {
+  text-align: center; background: #fff8e1; border-radius: 6px;
+  padding: 8px; color: #856404; font-size: 0.85rem;
+}
+
+/* ===== PAGE BACKGROUND ===== */
+.page-bg { background: #f5f5f5; min-height: calc(100vh - 56px); }
+
+/* ===== BUS LIST ===== */
+.search-bar-inline {
+  display: flex; gap: 10px; flex-wrap: wrap; background: white; padding: 16px;
+  border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); align-items: flex-end;
+}
+.sb-field { display: flex; flex-direction: column; flex: 1; min-width: 150px; }
+.sb-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+.sb-btn   { height: 42px; white-space: nowrap; }
+.filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.filter-label { font-size: 0.85rem; color: #888; }
+.filter-chip {
+  padding: 4px 14px; border: 1px solid #ddd; border-radius: 20px;
+  background: white; font-size: 0.85rem; cursor: pointer; transition: all 0.15s;
+}
+.filter-chip:hover, .filter-chip.active { background: #d84315; color: white; border-color: #d84315; }
+.result-count { font-size: 0.85rem; color: #888; }
+.bus-card {
+  background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  padding: 20px 24px; display: flex; align-items: center; gap: 24px;
+  transition: box-shadow 0.2s;
+}
+.bus-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+.bus-card-left { min-width: 160px; }
+.bus-name { font-size: 1.05rem; font-weight: 700; }
+.operator-name { font-size: 0.85rem; margin: 4px 0; }
+.bus-card-center { flex: 1; }
+.time-route { display: flex; align-items: center; gap: 16px; }
+.time-block { text-align: center; }
+.time { font-size: 1.1rem; font-weight: 700; }
+.city { font-size: 0.85rem; }
+.route-line { color: #ccc; font-size: 1.2rem; }
+.boarding-info { margin-top: 6px; }
+.bus-card-right { min-width: 130px; text-align: right; }
+.price { font-size: 1.4rem; font-weight: 700; color: #d84315; }
+.seats-left { font-size: 0.85rem; }
+
+/* ===== SEAT PAGE ===== */
+.bus-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: white; border-radius: 10px; padding: 16px 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.price-tag { font-size: 1.5rem; font-weight: 700; color: #d84315; }
+.seat-container {
+  background: white; border-radius: 10px; padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.seat-legend { display: flex; gap: 16px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+.seat-grid { display: flex; flex-direction: column; gap: 8px; }
+.seat-row { display: flex; align-items: center; gap: 8px; }
+.seat-pair { display: flex; gap: 8px; }
+.aisle { width: 24px; }
+.seat-box {
+  width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center;
+  justify-content: center; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  border: 2px solid #ddd; background: #f5f5f5; transition: all 0.15s;
+}
+.seat-box.available { background: #e8f5e9; border-color: #4caf50; color: #2e7d32; cursor: pointer; }
+.seat-box.available:hover { background: #c8e6c9; transform: scale(1.1); }
+.seat-box.selected, .seat-box.selected-demo { background: #d84315; border-color: #d84315; color: white; }
+.seat-box.locked { background: #fff3e0; border-color: #ff9800; color: #e65100; cursor: not-allowed; }
+.seat-box.booked { background: #ffebee; border-color: #f44336; color: #b71c1c; cursor: not-allowed; }
+.passenger-panel {
+  background: white; border-radius: 10px; padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06); position: sticky; top: 70px;
+}
+
+/* ===== PAYMENT PAGE ===== */
+.summary-card {
+  background: white; border-radius: 10px; padding: 20px 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.95rem; }
+.summary-row.total { font-size: 1.1rem; font-weight: 700; }
+.test-note { background: #f0f4ff; border-radius: 6px; padding: 10px; color: #3949ab; }
+
+/* ===== TICKET PAGE ===== */
+.success-banner {
+  display: flex; align-items: center; gap: 16px;
+  background: #e8f5e9; border-radius: 10px; padding: 16px 20px;
+  border-left: 4px solid #4caf50;
+}
+.check-icon {
+  width: 40px; height: 40px; background: #4caf50; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.2rem; font-weight: 700; flex-shrink: 0;
+}
+.ticket-card {
+  background: white; border-radius: 10px; box-shadow: 0 2px 14px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.ticket-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #d84315; color: white; padding: 14px 20px;
+}
+.ticket-id { font-weight: 700; }
+.ticket-route {
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 24px 20px; background: #fff8f6;
+}
+.route-point { text-align: center; }
+.city { font-size: 1.3rem; font-weight: 700; }
+.time { font-size: 0.9rem; color: #666; margin-top: 4px; }
+.route-arrow { font-size: 1.5rem; color: #d84315; }
+.ticket-details { padding: 0 20px 20px; }
+.detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 0.95rem; }
+
+/* ===== BOOKING HISTORY ===== */
+.booking-card {
+  background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  overflow: hidden; transition: box-shadow 0.2s;
+}
+.booking-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+.booking-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; border-bottom: 1px solid #f5f5f5;
+}
+.booking-details {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px; padding: 16px 20px;
+}
+.detail-item { display: flex; flex-direction: column; }
+.detail-item .label { font-size: 0.75rem; color: #999; text-transform: uppercase; margin-bottom: 2px; }
+.booking-actions { padding: 10px 20px; border-top: 1px solid #f5f5f5; }
+.empty-state { text-align: center; padding: 60px 20px; }
+.empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+/* ===== UTILITIES ===== */
+.form-control, .form-select { border-radius: 6px; border: 1px solid #ddd; padding: 8px 12px; font-size: 0.95rem; }
+.form-control:focus, .form-select:focus { border-color: #d84315; box-shadow: 0 0 0 3px rgba(216,67,21,0.1); outline: none; }
+.btn-danger { background: #d84315 !important; border-color: #d84315 !important; }
+.btn-danger:hover { background: #bf360c !important; border-color: #bf360c !important; }
+
+/* ===== ADMIN / OPERATOR PANEL ===== */
+.admin-header { display: flex; align-items: center; gap: 12px; }
+.admin-header h4 { margin: 0; }
+.admin-tabs { display: flex; gap: 4px; border-bottom: 2px solid #eee; }
+.admin-tabs button {
+  padding: 8px 20px; border: none; background: none; font-size: 0.9rem;
+  color: #666; border-bottom: 3px solid transparent; cursor: pointer; margin-bottom: -2px;
+  border-radius: 4px 4px 0 0; transition: all 0.2s;
+}
+.admin-tabs button:hover { background: #f5f5f5; color: #d84315; }
+.admin-tabs button.active { color: #d84315; border-bottom-color: #d84315; font-weight: 600; background: #fff8f6; }
+
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-bottom: 8px;
+}
+.stat-card {
+  background: white; border-radius: 10px; padding: 20px 16px; text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-top: 3px solid #eee;
+}
+.stat-card.pending  { border-top-color: #ff9800; }
+.stat-card.revenue  { border-top-color: #4caf50; }
+.stat-num  { font-size: 1.8rem; font-weight: 700; color: #333; }
+.stat-label { font-size: 0.8rem; color: #999; margin-top: 4px; text-transform: uppercase; }
+
+.operator-card {
+  background: white; border-radius: 8px; padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+.pending-card { border-left: 4px solid #ff9800; }
+
+.add-form { background: white; border-radius: 10px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+
+.locations-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.location-chip {
+  background: #fff3e0; border: 1px solid #ffcc80; color: #e65100;
+  padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; font-size: 0.9rem;
+}
+.chip-delete {
+  background: none; border: none; color: #e65100; font-size: 1.1rem;
+  cursor: pointer; padding: 0 2px; line-height: 1;
+}
+.chip-delete:hover { color: #b71c1c; }
+
+.routes-list { display: flex; flex-direction: column; gap: 8px; }
+.route-row {
+  background: white; border-radius: 8px; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+.route-text { font-weight: 600; }
+
+.badge.bg-pink { background-color: #f48fb1 !important; color: #880e4f; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  /* Home */
+  .hero { padding: 40px 16px 30px; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: 0.95rem; }
+  .home-nav { padding: 12px 16px; }
+  .search-card { padding: 16px; margin: 0 8px; }
+  .search-row { flex-direction: column; }
+  .swap-btn { align-self: center; transform: rotate(90deg); }
+  .features { flex-direction: column; align-items: center; padding: 30px 16px; }
+  .feature-card { width: 100%; max-width: 320px; padding: 20px; }
+
+  /* Navbar */
+  .app-navbar { padding: 0 12px; }
+  .navbar-brand { font-size: 1.1rem; }
+  .navbar-links { gap: 10px; font-size: 0.85rem; }
+  .navbar-user { display: none; }
+
+  /* Auth */
+  .auth-card { width: 95vw; padding: 24px 16px; }
+
+  /* Bus list */
+  .search-bar-inline { flex-direction: column; }
+  .sb-field { min-width: 100%; }
+  .sb-btn { width: 100%; }
+  .bus-card { flex-direction: column; gap: 12px; }
+  .bus-card-center { border-top: 1px solid #f0f0f0; padding-top: 10px; }
+  .bus-card-right { width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between; }
+  .select-btn { width: auto !important; }
+
+  /* Seat grid — show 2 seats per pair instead of cramped 4 */
+  .seat-box { width: 34px; height: 34px; font-size: 0.72rem; }
+  .seat-row { gap: 4px; }
+  .seat-pair { gap: 4px; }
+
+  /* Ticket */
+  .ticket-route { flex-direction: column; gap: 8px; text-align: center; }
+  .route-arrow { transform: rotate(90deg); }
+
+  /* Admin / Operator */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .operator-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .admin-tabs { overflow-x: auto; white-space: nowrap; }
+  .admin-tabs button { padding: 8px 12px; font-size: 0.82rem; }
+}
+
+/* ===== BUS RATING STARS (bus-list) ===== */
+.bus-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+.stars-text { color: #f59e0b; letter-spacing: 1px; }
+.rating-score { font-weight: 700; color: #333; }
+.rating-count { font-size: 12px; }
+
+/* ===== RATINGS TABLE (admin) ===== */
+.ratings-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ratings-table th {
+  background: #f5f5f5; padding: 10px 14px;
+  text-align: left; font-weight: 600; color: #555;
+  border-bottom: 2px solid #e0e0e0;
+}
+.ratings-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+.ratings-table tr:last-child td { border-bottom: none; }
+.stars-cell { color: #f59e0b; font-size: 16px; letter-spacing: 1px; }
+.having-badge {
+  display: inline-block; background: #e8f5e9; color: #2e7d32;
+  padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;
+}
+.threshold-controls {
+  display: flex; align-items: center; gap: 16px;
+  background: white; padding: 16px; border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 20px;
+  flex-wrap: wrap;
+}

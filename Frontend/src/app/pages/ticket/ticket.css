@@ -1,0 +1,134 @@
+.page-bg {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.ticket-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.ticket-route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.route-point {
+  text-align: center;
+}
+
+.route-arrow {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.success-banner {
+  background: #e6ffed;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.check-icon {
+  background: green;
+  color: white;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.ticket-id {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.city {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.time {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Passengers table */
+.passengers-section {
+  margin-top: 4px;
+}
+
+.passengers-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.passengers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.passengers-table th {
+  background: #f5f5f5;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.passengers-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.passengers-table tr:last-child td {
+  border-bottom: none;
+}
+
+.seat-chip {
+  background: #e53935;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ticket-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  padding-top: 4px;
+}
+
+.ticket-total strong {
+  font-size: 20px;
+  font-weight: 800;
+}

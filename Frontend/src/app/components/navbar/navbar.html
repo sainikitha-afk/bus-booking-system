@@ -1,0 +1,21 @@
+<nav class="app-navbar">
+  <a routerLink="/" class="navbar-brand">🚌 BusGo</a>
+
+  <div class="navbar-links">
+    <ng-container *ngIf="isLoggedIn">
+      <a [routerLink]="dashboardLink">
+        {{ userRole === 'Admin' ? 'Admin Panel' : userRole === 'Operator' ? 'Dashboard' : 'Search Buses' }}
+      </a>
+      <a routerLink="/history" *ngIf="userRole === 'Customer'">My Bookings</a>
+      <span class="navbar-user">👤 {{ userName }}</span>
+      <span class="badge ms-1" [class.bg-danger]="userRole==='Admin'" [class.bg-primary]="userRole==='Operator'" [class.bg-secondary]="userRole==='Customer'">
+        {{ userRole }}
+      </span>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </ng-container>
+    <ng-container *ngIf="!isLoggedIn">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register" class="btn-nav-register">Register</a>
+    </ng-container>
+  </div>
+</nav>

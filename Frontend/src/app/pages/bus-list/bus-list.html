@@ -1,0 +1,118 @@
+<div class="page-bg">
+  <div class="container py-4">
+
+    <!-- Search Bar -->
+    <div class="search-bar-inline mb-3">
+      <div class="sb-field">
+        <label class="sb-label">From</label>
+        <input [(ngModel)]="searchSource" list="bl-cities-from" class="form-control"
+               placeholder="Source city" autocomplete="off" />
+        <datalist id="bl-cities-from">
+          <option *ngFor="let c of cities" [value]="c"></option>
+        </datalist>
+      </div>
+
+      <div class="sb-field">
+        <label class="sb-label">To</label>
+        <input [(ngModel)]="searchDestination" list="bl-cities-to" class="form-control"
+               placeholder="Destination city" autocomplete="off" />
+        <datalist id="bl-cities-to">
+          <option *ngFor="let c of cities" [value]="c"></option>
+        </datalist>
+      </div>
+
+      <div class="sb-field">
+        <label class="sb-label">Date</label>
+        <input [(ngModel)]="searchDate" type="date" class="form-control" />
+      </div>
+
+      <button class="btn btn-danger sb-btn" (click)="doSearch()">Search</button>
+      <button class="btn btn-outline-secondary sb-btn"
+              *ngIf="searchSource || searchDestination || searchDate"
+              (click)="searchSource=''; searchDestination=''; searchDate=''; doSearch()">
+        Clear
+      </button>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="filter-row mb-4">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-chip" [class.active]="filterType === ''"        (click)="filterType='';        applyFilter()">All</button>
+      <button class="filter-chip" [class.active]="filterType === 'AC'"      (click)="filterType='AC';      applyFilter()">AC</button>
+      <button class="filter-chip" [class.active]="filterType === 'Sleeper'" (click)="filterType='Sleeper'; applyFilter()">Sleeper</button>
+      <button class="filter-chip" [class.active]="filterType === 'Non-AC'"  (click)="filterType='Non-AC';  applyFilter()">Non-AC</button>
+      <span class="ms-auto result-count">{{ filteredBuses.length }} bus(es) found</span>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-danger"></div>
+      <p class="mt-2 text-muted">Searching buses...</p>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error && !loading" class="alert alert-danger">{{ error }}</div>
+
+    <!-- Empty -->
+    <div *ngIf="!loading && !error && filteredBuses.length === 0" class="empty-state">
+      <div class="empty-icon">🚌</div>
+      <h5>No buses found</h5>
+      <p class="text-muted">Try a different route or date.</p>
+    </div>
+
+    <!-- Bus Cards -->
+    <div *ngFor="let bus of filteredBuses" class="bus-card mb-3">
+
+      <div class="bus-card-left">
+        <div class="bus-name">{{ bus.name }}</div>
+        <div class="operator-name text-muted">{{ bus.operatorName }}</div>
+        <div class="mt-1 d-flex flex-wrap gap-1 align-items-center">
+          <span [class]="busTypeClass(bus.busType)">{{ bus.busType }}</span>
+          <span *ngIf="bus.isWomenOnly" class="badge bg-pink">♀ Women Only</span>
+        </div>
+        <!-- Rating from feedback (GROUP BY aggregated) -->
+        <div class="bus-rating mt-1" *ngIf="getRating(bus.id) as r">
+          <span class="stars-text">{{ starsDisplay(r.avgRating) }}</span>
+          <span class="rating-score">{{ r.avgRating }}</span>
+          <span class="rating-count text-muted">({{ r.totalReviews }})</span>
+        </div>
+        <div class="text-muted small mt-1" *ngIf="bus.vehicleRegNumber">
+          🚌 {{ bus.vehicleRegNumber }}
+        </div>
+      </div>
+
+      <div class="bus-card-center">
+        <div class="time-route">
+          <div class="time-block">
+            <div class="time">{{ bus.departureTime }}</div>
+            <div class="city text-muted">{{ bus.source }}</div>
+          </div>
+          <div class="route-line">
+            <div class="route-dots">— — —</div>
+          </div>
+          <div class="time-block">
+            <div class="time">{{ bus.arrivalTime }}</div>
+            <div class="city text-muted">{{ bus.destination }}</div>
+          </div>
+        </div>
+        <div class="boarding-info" *ngIf="bus.boardingPoint">
+          <small class="text-muted">📍 Boarding: {{ bus.boardingPoint }}</small>
+          <small class="text-muted ms-3">🏁 Drop: {{ bus.dropPoint }}</small>
+        </div>
+        <div *ngIf="bus.travelDate" class="text-muted small mt-1">
+          📅 {{ bus.travelDate | date:'mediumDate' }}
+        </div>
+      </div>
+
+      <div class="bus-card-right">
+        <div class="price">₹{{ bus.price }}</div>
+        <div class="seats-left text-muted">{{ bus.seatsAvailable }} seats left</div>
+        <button class="btn btn-danger mt-2 w-100 select-btn" (click)="selectBus(bus)">
+          Select Seats
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
